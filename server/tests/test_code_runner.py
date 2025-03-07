@@ -20,10 +20,9 @@ def test_writes_temp_file(tmp_path):
         assert file.read() == "test"
 
 
-# We do want this, but skip for now
 def test_program_exits_on_runtime_error(tmp_path):
     file_path = tmp_path / TEMP_FILE
-    # IoUtility.write_temp_file("bad code", file_path)
+    IoUtility.write_temp_file("bad code", file_path)
     test_runner = CodeRunner(file_path)
 
     with pytest.raises(RuntimeError):
@@ -32,7 +31,7 @@ def test_program_exits_on_runtime_error(tmp_path):
 
 def test_runs_valid_program(tmp_path):
     file_path = tmp_path / TEMP_FILE
-    IoUtility.write_temp_file("x=5\nprint(x)", file_path)
+    IoUtility.write_temp_file("print(1)", file_path)
     test_runner = CodeRunner(file_path)
     test_runner.run_program()
     ## Just checking that it doesn't raise an error
@@ -41,10 +40,10 @@ def test_runs_valid_program(tmp_path):
 
 def test_captures_program_output(tmp_path):
     file_path = tmp_path / TEMP_FILE
-    IoUtility.write_temp_file("x=5\nprint(x)", file_path)
+    IoUtility.write_temp_file("print(1)", file_path)
     test_runner = CodeRunner(file_path)
     output = test_runner.run_program()
-    assert output == "5"
+    assert output == "1"
 
 
 def test_captures_program_prompts(tmp_path):
@@ -53,3 +52,11 @@ def test_captures_program_prompts(tmp_path):
     test_runner = CodeRunner(file_path)
     output = test_runner.run_program(inputs=[""])
     assert "test input" in output
+
+
+def test_fails_if_hung_on_input(tmp_path):
+    file_path = tmp_path / TEMP_FILE
+    IoUtility.write_temp_file("input()", file_path)
+    test_runner = CodeRunner(file_path)
+    with pytest.raises(RuntimeError):
+        test_runner.run_program(inputs=[], timeout=0.1)

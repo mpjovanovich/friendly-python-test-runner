@@ -14,19 +14,35 @@ class CodeRunner:
         self.program_path = program_path
         self.child = None
 
-    def run_program(self, inputs: list[str] = []) -> str:
+    def run_program(self, inputs: list[str] = [], timeout: int = 10) -> str:
         try:
             self.child = pexpect.spawn(f'python3 {self.program_path}')
-            # Don't know if I need this...
-            # child.logfile = None
+
+            # # Don't know if I need this...
+            # # child.logfile = None
+            # for input_value in inputs:
+            #     self.child.sendline(input_value)
+
             for input_value in inputs:
-                self.child.sendline(input_value)
-            self.child.expect(pexpect.EOF)
+                try:
+                    ## Send the input value to the program
+                    self.child.sendline(input_value)
+                except pexpect.TIMEOUT:
+                    raise RuntimeError("Program is stuck waiting for input.")
+
+            # If we can't reach EOF in a reasonable time, program is more than
+            # likely stuck a prompt that should not be there.
+            try:
+                self.child.expect(pexpect.EOF, timeout=timeout)
+            except pexpect.TIMEOUT:
+                raise RuntimeError("Program is stuck waiting for input.")
+
+            # self.child.expect(pexpect.EOF)
             self.child.wait()
-            output = self.get_program_output()
+            output = self.__get_program_output()
 
             if self.child.exitstatus != 0:
-                raise RuntimeError(self.get_error_info(output))
+                raise RuntimeError(self.__get_error_info(output))
 
             return output
         finally:
@@ -34,10 +50,10 @@ class CodeRunner:
                 self.child.close()
                 self.child = None
 
-    ## Gets the output of the program after it has finished running
-    def get_program_output(self) -> str:
-        return self.child.before.decode('utf-8').strip()
-
     ## Gets the error info from the program after it has finished running
-    def get_error_info(self, error_output: str) -> str:
+    def __get_error_info(self, error_output: str) -> str:
         return error_output.split("\n")[-1].strip()
+
+    ## Gets the output of the program after it has finished running
+    def __get_program_output(self) -> str:
+        return self.child.before.decode('utf-8').strip()

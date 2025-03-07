@@ -18,26 +18,16 @@ class CodeRunner:
         try:
             self.child = pexpect.spawn(f'python3 {self.program_path}')
 
-            # # Don't know if I need this...
-            # # child.logfile = None
-            # for input_value in inputs:
-            #     self.child.sendline(input_value)
-
             for input_value in inputs:
-                try:
-                    ## Send the input value to the program
-                    self.child.sendline(input_value)
-                except pexpect.TIMEOUT:
-                    raise RuntimeError("Program is stuck waiting for input.")
+                self.child.sendline(input_value)
 
-            # If we can't reach EOF in a reasonable time, program is more than
-            # likely stuck a prompt that should not be there.
+            # If we can't reach EOF in a reasonable time, program is either stuck
+            ## on a prompt or on compute (e.g. bad loop)
             try:
                 self.child.expect(pexpect.EOF, timeout=timeout)
             except pexpect.TIMEOUT:
-                raise RuntimeError("Program is stuck waiting for input.")
+                raise RuntimeError("Program is stuck.")
 
-            # self.child.expect(pexpect.EOF)
             self.child.wait()
             output = self.__get_program_output()
 

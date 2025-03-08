@@ -22,8 +22,7 @@ def test_runs_case(mocker):
                 comparison_type="contains",
                 is_bonus=False)
     cases = [case]
-    suite_runner = SuiteRunner(mock_case_runner, cases)
-    suite_runner.run()
+    SuiteRunner.run(mock_case_runner, cases)
     mock_case_runner.run_program.assert_called_once_with(case.inputs)
 
 
@@ -36,8 +35,7 @@ def test_handles_exception(mocker):
                 comparison_type="contains",
                 is_bonus=False)
     cases = [case]
-    suite_runner = SuiteRunner(mock_case_runner, cases)
-    suite_runner.run()
+    SuiteRunner.run(mock_case_runner, cases)
     assert case.passed is False
     assert case.error == "test error"
 
@@ -52,8 +50,7 @@ def test_contains_passes(mocker):
              comparison_type="contains",
              is_bonus=False),
     ]
-    suite_runner = SuiteRunner(mock_case_runner, cases)
-    suite_runner.run()
+    SuiteRunner.run(mock_case_runner, cases)
     assert cases[0].passed is True
 
 
@@ -67,8 +64,7 @@ def test_contains_fails(mocker):
              comparison_type="contains",
              is_bonus=False),
     ]
-    suite_runner = SuiteRunner(mock_case_runner, cases)
-    suite_runner.run()
+    SuiteRunner.run(mock_case_runner, cases)
     assert cases[0].passed is False
 
 
@@ -82,8 +78,7 @@ def test_equals_passes(mocker):
              comparison_type="equals",
              is_bonus=False),
     ]
-    suite_runner = SuiteRunner(mock_case_runner, cases)
-    suite_runner.run()
+    SuiteRunner.run(mock_case_runner, cases)
     assert cases[0].passed is True
 
 
@@ -97,8 +92,7 @@ def test_equals_fails(mocker):
              comparison_type="equals",
              is_bonus=False),
     ]
-    suite_runner = SuiteRunner(mock_case_runner, cases)
-    suite_runner.run()
+    SuiteRunner.run(mock_case_runner, cases)
     assert cases[0].passed is False
 
 
@@ -112,8 +106,7 @@ def test_equals_passes_multiline(mocker):
              comparison_type="equals",
              is_bonus=False),
     ]
-    suite_runner = SuiteRunner(mock_case_runner, cases)
-    suite_runner.run()
+    SuiteRunner.run(mock_case_runner, cases)
     assert cases[0].passed is True
 
 
@@ -127,6 +120,5 @@ def test_equals_fails_multiline(mocker):
              comparison_type="equals",
              is_bonus=False),
     ]
-    suite_runner = SuiteRunner(mock_case_runner, cases)
-    suite_runner.run()
+    SuiteRunner.run(mock_case_runner, cases)
     assert cases[0].passed is False

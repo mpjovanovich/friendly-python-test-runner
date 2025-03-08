@@ -15,9 +15,9 @@ class SuiteRunner:
                 result = SuiteRunner._check_result(normalized_output,
                                                    normalized_expected,
                                                    case.comparison_type)
-                case.set_result(result)
+                case.set_result(result, output)
             except Exception as e:
-                case.set_result(False, str(e))
+                case.set_result(False, "", str(e))
 
     @staticmethod
     def _check_result(output: str, expected: str,

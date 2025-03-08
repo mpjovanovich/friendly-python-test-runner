@@ -10,8 +10,6 @@ from IoUtility import IoUtility
 from Case import Case
 from CaseRunner import CaseRunner
 
-TEMP_FILE = "test.py"
-
 
 def test_runs_case(mocker):
     mock_case_runner = mocker.Mock()
@@ -122,3 +120,17 @@ def test_equals_fails_multiline(mocker):
     ]
     SuiteRunner.run(mock_case_runner, cases)
     assert cases[0].passed is False
+
+
+def test_captures_output(mocker):
+    mock_case_runner = mocker.Mock()
+    mock_case_runner.run_program.return_value = "test"
+    cases = [
+        Case(title="",
+             inputs=[],
+             expected_output="test",
+             comparison_type="equals",
+             is_bonus=False),
+    ]
+    SuiteRunner.run(mock_case_runner, cases)
+    assert cases[0].output == "test"

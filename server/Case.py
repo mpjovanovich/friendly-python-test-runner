@@ -12,8 +12,10 @@ class Case:
         self.comparison_type = comparison_type
         self.is_bonus = is_bonus
         self.passed = None
+        self.output = None
         self.error = None
 
-    def set_result(self, passed: bool, error: str = None):
+    def set_result(self, passed: bool, output: str, error: str = None):
         self.passed = passed
+        self.output = output
         self.error = error

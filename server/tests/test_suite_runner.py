@@ -1,5 +1,4 @@
 import pytest
-from unittest.mock import Mock
 import sys
 from pathlib import Path
 
@@ -14,8 +13,8 @@ from CaseRunner import CaseRunner
 TEMP_FILE = "test.py"
 
 
-def test_runs_case():
-    mock_case_runner = Mock()
+def test_runs_case(mocker):
+    mock_case_runner = mocker.Mock()
     mock_case_runner.run_program.side_effect = Exception("test error")
     case = Case(title="",
                 inputs=[],
@@ -28,8 +27,8 @@ def test_runs_case():
     mock_case_runner.run_program.assert_called_once_with(case.inputs)
 
 
-def test_handles_exception():
-    mock_case_runner = Mock()
+def test_handles_exception(mocker):
+    mock_case_runner = mocker.Mock()
     mock_case_runner.run_program.side_effect = Exception("test error")
     case = Case(title="",
                 inputs=[],
@@ -43,8 +42,8 @@ def test_handles_exception():
     assert case.error == "test error"
 
 
-def test_contains_passes():
-    mock_case_runner = Mock()
+def test_contains_passes(mocker):
+    mock_case_runner = mocker.Mock()
     mock_case_runner.run_program.return_value = "bla test123 bla"
     cases = [
         Case(title="",
@@ -58,8 +57,8 @@ def test_contains_passes():
     assert cases[0].passed is True
 
 
-def test_contains_fails():
-    mock_case_runner = Mock()
+def test_contains_fails(mocker):
+    mock_case_runner = mocker.Mock()
     mock_case_runner.run_program.return_value = "bla"
     cases = [
         Case(title="",
@@ -73,8 +72,8 @@ def test_contains_fails():
     assert cases[0].passed is False
 
 
-def test_equals_passes():
-    mock_case_runner = Mock()
+def test_equals_passes(mocker):
+    mock_case_runner = mocker.Mock()
     mock_case_runner.run_program.return_value = "test"
     cases = [
         Case(title="",
@@ -88,8 +87,8 @@ def test_equals_passes():
     assert cases[0].passed is True
 
 
-def test_equals_fails():
-    mock_case_runner = Mock()
+def test_equals_fails(mocker):
+    mock_case_runner = mocker.Mock()
     mock_case_runner.run_program.return_value = "test1"
     cases = [
         Case(title="",
@@ -103,8 +102,8 @@ def test_equals_fails():
     assert cases[0].passed is False
 
 
-def test_equals_passes_multiline():
-    mock_case_runner = Mock()
+def test_equals_passes_multiline(mocker):
+    mock_case_runner = mocker.Mock()
     mock_case_runner.run_program.return_value = "test\n123"
     cases = [
         Case(title="",
@@ -118,8 +117,8 @@ def test_equals_passes_multiline():
     assert cases[0].passed is True
 
 
-def test_equals_fails_multiline():
-    mock_case_runner = Mock()
+def test_equals_fails_multiline(mocker):
+    mock_case_runner = mocker.Mock()
     mock_case_runner.run_program.return_value = "test123"
     cases = [
         Case(title="",

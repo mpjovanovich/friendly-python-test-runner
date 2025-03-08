@@ -1,0 +1,133 @@
+import pytest
+from unittest.mock import Mock
+import sys
+from pathlib import Path
+
+# Add parent directory to Python path
+sys.path.append(str(Path(__file__).parent.parent))
+
+from SuiteRunner import SuiteRunner
+from IoUtility import IoUtility
+from Case import Case
+from CaseRunner import CaseRunner
+
+TEMP_FILE = "test.py"
+
+
+def test_runs_case():
+    mock_case_runner = Mock()
+    mock_case_runner.run_program.side_effect = Exception("test error")
+    case = Case(title="",
+                inputs=[],
+                expected_output="",
+                comparison_type="contains",
+                is_bonus=False)
+    cases = [case]
+    suite_runner = SuiteRunner(mock_case_runner, cases)
+    suite_runner.run()
+    mock_case_runner.run_program.assert_called_once_with(case.inputs)
+
+
+def test_handles_exception():
+    mock_case_runner = Mock()
+    mock_case_runner.run_program.side_effect = Exception("test error")
+    case = Case(title="",
+                inputs=[],
+                expected_output="",
+                comparison_type="contains",
+                is_bonus=False)
+    cases = [case]
+    suite_runner = SuiteRunner(mock_case_runner, cases)
+    suite_runner.run()
+    assert case.passed is False
+    assert case.error == "test error"
+
+
+def test_contains_passes():
+    mock_case_runner = Mock()
+    mock_case_runner.run_program.return_value = "bla test123 bla"
+    cases = [
+        Case(title="",
+             inputs=[],
+             expected_output="test",
+             comparison_type="contains",
+             is_bonus=False),
+    ]
+    suite_runner = SuiteRunner(mock_case_runner, cases)
+    suite_runner.run()
+    assert cases[0].passed is True
+
+
+def test_contains_fails():
+    mock_case_runner = Mock()
+    mock_case_runner.run_program.return_value = "bla"
+    cases = [
+        Case(title="",
+             inputs=[],
+             expected_output="test",
+             comparison_type="contains",
+             is_bonus=False),
+    ]
+    suite_runner = SuiteRunner(mock_case_runner, cases)
+    suite_runner.run()
+    assert cases[0].passed is False
+
+
+def test_equals_passes():
+    mock_case_runner = Mock()
+    mock_case_runner.run_program.return_value = "test"
+    cases = [
+        Case(title="",
+             inputs=[],
+             expected_output="test",
+             comparison_type="equals",
+             is_bonus=False),
+    ]
+    suite_runner = SuiteRunner(mock_case_runner, cases)
+    suite_runner.run()
+    assert cases[0].passed is True
+
+
+def test_equals_fails():
+    mock_case_runner = Mock()
+    mock_case_runner.run_program.return_value = "test1"
+    cases = [
+        Case(title="",
+             inputs=[],
+             expected_output="test",
+             comparison_type="equals",
+             is_bonus=False),
+    ]
+    suite_runner = SuiteRunner(mock_case_runner, cases)
+    suite_runner.run()
+    assert cases[0].passed is False
+
+
+def test_equals_passes_multiline():
+    mock_case_runner = Mock()
+    mock_case_runner.run_program.return_value = "test\n123"
+    cases = [
+        Case(title="",
+             inputs=[],
+             expected_output="test\n123",
+             comparison_type="equals",
+             is_bonus=False),
+    ]
+    suite_runner = SuiteRunner(mock_case_runner, cases)
+    suite_runner.run()
+    assert cases[0].passed is True
+
+
+def test_equals_fails_multiline():
+    mock_case_runner = Mock()
+    mock_case_runner.run_program.return_value = "test123"
+    cases = [
+        Case(title="",
+             inputs=[],
+             expected_output="test\n123",
+             comparison_type="equals",
+             is_bonus=False),
+    ]
+    suite_runner = SuiteRunner(mock_case_runner, cases)
+    suite_runner.run()
+    assert cases[0].passed is False

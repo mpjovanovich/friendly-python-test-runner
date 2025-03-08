@@ -3,7 +3,8 @@ import pexpect
 from pathlib import Path
 
 
-class CodeRunner:
+class CaseRunner:
+    PYTHON = "python3"
     TEMP_DIR = "tmp"
     STUDENT_CODE_FILE = "student_code.py"
 
@@ -14,9 +15,9 @@ class CodeRunner:
         self.program_path = program_path
         self.child = None
 
-    def run_program(self, inputs: list[str] = [], timeout: int = 10) -> str:
+    def run_program(self, inputs: list[str], timeout: int = 10) -> str:
         try:
-            self.child = pexpect.spawn(f'python3 {self.program_path}')
+            self.child = pexpect.spawn(f'{self.PYTHON} {self.program_path}')
 
             for input_value in inputs:
                 self.child.sendline(input_value)

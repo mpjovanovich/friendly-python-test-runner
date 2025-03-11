@@ -12,16 +12,35 @@ class ResultFormatter:
     def format_case(self, case: Case) -> str:
         separator = "=" * 60
         sub_separator = "-" * 55
-        return f"""{separator}
-{"⭐ BONUS: " if case.is_bonus else "🎮 "}{case.title}
-{sub_separator}
-Program Output:
-┌─────────────────────────────────────────────────────┐
-{case.output}
-└─────────────────────────────────────────────────────┘
 
-Checking if output {"contains" if case.comparison_type == "contains" else "equals"}:
-"{case.expected_output}"
+        title = f"{'⭐ BONUS: ' if case.is_bonus else '🎮 '}{case.title}"
 
-Result: {"✅ PASSED" if case.passed else "❌ FAILED"}
-{separator}"""
+        error = "ERROR:\n"
+        error += "┌─────────────────────────────────────────────────────┐\n"
+        error += f"{case.error}\n"
+        error += "└─────────────────────────────────────────────────────┘"
+
+        program_output = "PROGRAM OUTPUT:\n"
+        program_output += "┌─────────────────────────────────────────────────────┐\n"
+        program_output += f"{case.output}\n"
+        program_output += "└─────────────────────────────────────────────────────┘"
+
+        expected_output = f'CHECKING FOR OUTPUT ({"contains" if case.comparison_type == "contains" else "equals"}):\n'
+        expected_output += case.expected_output
+
+        result = f'RESULT: {"✅ PASSED" if case.passed else "❌ FAILED"}'
+
+        formatted_result = f"{separator}\n"
+        formatted_result += f"{title}\n"
+        formatted_result += f"{sub_separator}\n"
+        if case.error:
+            formatted_result += f"{error}\n"
+        else:
+            formatted_result += f"{program_output}\n"
+            formatted_result += f"\n"
+            formatted_result += f"{expected_output}\n"
+        formatted_result += f"\n"
+        formatted_result += f"{result}\n"
+        formatted_result += f"{separator}\n"
+
+        return formatted_result

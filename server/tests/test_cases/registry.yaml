@@ -1,0 +1,2 @@
+test: suites/test.yaml
+missing_file: suites/missing_file.yaml

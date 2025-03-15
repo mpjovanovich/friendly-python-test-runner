@@ -1,0 +1,5 @@
+- title: "test"
+  inputs: ["input1", "input2"]
+  expected_output: "test output"
+  comparison_type: "contains"
+  is_bonus: true

@@ -6,7 +6,6 @@ from pathlib import Path
 class CaseRunner:
     PYTHON = "python3"
     TEMP_DIR = "tmp"
-    STUDENT_CODE_FILE = "student_code.py"
 
     def __init__(self, program_path: Path):
         # Should do this at startup

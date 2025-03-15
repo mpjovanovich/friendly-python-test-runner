@@ -5,7 +5,7 @@ from CaseRunner import CaseRunner
 class SuiteRunner:
 
     @staticmethod
-    def run(case_runner: CaseRunner, cases: list[Case]) -> None:
+    def run_cases(case_runner: CaseRunner, cases: list[Case]) -> None:
         for case in cases:
             try:
                 output = case_runner.run_program(case.inputs)

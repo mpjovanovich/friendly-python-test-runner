@@ -3,13 +3,13 @@ from Case import Case
 
 class ResultFormatter:
 
-    def __init__(self, cases=None):
-        self._cases = cases if cases is not None else []
+    @staticmethod
+    def format_cases(cases: list[Case]) -> str:
+        return "\n\n\n".join(
+            [ResultFormatter.format_case(case) for case in cases])
 
-    def format_cases(self) -> str:
-        return "\n\n\n".join([self.format_case(case) for case in self._cases])
-
-    def format_case(self, case: Case) -> str:
+    @staticmethod
+    def format_case(case: Case) -> str:
         separator = "=" * 60
         sub_separator = "-" * 55
 

@@ -3,6 +3,9 @@ import pexpect
 from pathlib import Path
 
 
+## Runs a program with the given inputs and returns the output.
+## State is scoped to one and only one program. Then it should be
+## discarded.
 class CaseRunner:
     PYTHON = "python3"
     TEMP_DIR = "tmp"
@@ -21,7 +24,7 @@ class CaseRunner:
             for input_value in inputs:
                 self.child.sendline(input_value)
 
-            # If we can't reach EOF in a reasonable time, program is either stuck
+            ## If we can't reach EOF in a reasonable time, program is either stuck
             ## on a prompt or on compute (e.g. bad loop)
             try:
                 self.child.expect(pexpect.EOF, timeout=timeout)

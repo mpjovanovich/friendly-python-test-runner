@@ -16,7 +16,7 @@ def test_displays_error_header_when_error():
                 comparison_type="contains",
                 is_bonus=False)
     case.set_result(False, "", "Error message")
-    assert "ERROR:" in ResultFormatter().format_case(case)
+    assert "ERROR:" in ResultFormatter.format_case(case)
 
 
 def test_displays_error_message_when_error():
@@ -26,7 +26,7 @@ def test_displays_error_message_when_error():
                 comparison_type="contains",
                 is_bonus=False)
     case.set_result(False, "", "message123")
-    assert "message123" in ResultFormatter().format_case(case)
+    assert "message123" in ResultFormatter.format_case(case)
 
 
 def test_displays_program_output_header_when_no_error():
@@ -36,7 +36,7 @@ def test_displays_program_output_header_when_no_error():
                 comparison_type="contains",
                 is_bonus=False)
     case.set_result(True, "output", "")
-    assert "PROGRAM OUTPUT:" in ResultFormatter().format_case(case)
+    assert "PROGRAM OUTPUT:" in ResultFormatter.format_case(case)
 
 
 def test_displays_program_output_when_no_error():
@@ -46,7 +46,7 @@ def test_displays_program_output_when_no_error():
                 comparison_type="contains",
                 is_bonus=False)
     case.set_result(True, "output123", "")
-    assert "output123" in ResultFormatter().format_case(case)
+    assert "output123" in ResultFormatter.format_case(case)
 
 
 def test_displays_checking_for_contains_message():
@@ -55,7 +55,7 @@ def test_displays_checking_for_contains_message():
                 expected_output="",
                 comparison_type="contains",
                 is_bonus=False)
-    assert "CHECKING FOR OUTPUT (contains):" in ResultFormatter().format_case(
+    assert "CHECKING FOR OUTPUT (contains):" in ResultFormatter.format_case(
         case)
 
 
@@ -65,8 +65,7 @@ def test_displays_checking_for_equals_message():
                 expected_output="",
                 comparison_type="equals",
                 is_bonus=False)
-    assert "CHECKING FOR OUTPUT (equals):" in ResultFormatter().format_case(
-        case)
+    assert "CHECKING FOR OUTPUT (equals):" in ResultFormatter.format_case(case)
 
 
 def test_pass_gives_green_check():
@@ -76,7 +75,7 @@ def test_pass_gives_green_check():
                 comparison_type="contains",
                 is_bonus=False)
     case.set_result(True, "", None)
-    assert "✅ PASSED" in ResultFormatter().format_case(case)
+    assert "✅ PASSED" in ResultFormatter.format_case(case)
 
 
 def test_fail_gives_red_x():
@@ -86,7 +85,7 @@ def test_fail_gives_red_x():
                 comparison_type="contains",
                 is_bonus=False)
     case.set_result(False, "", None)
-    assert "❌ FAILED" in ResultFormatter().format_case(case)
+    assert "❌ FAILED" in ResultFormatter.format_case(case)
 
 
 def test_bonus_gives_star():
@@ -96,7 +95,7 @@ def test_bonus_gives_star():
                 comparison_type="contains",
                 is_bonus=True)
     case.set_result(True, "", None)
-    assert "⭐ BONUS: " in ResultFormatter().format_case(case)
+    assert "⭐ BONUS: " in ResultFormatter.format_case(case)
 
 
 def test_not_bonus_gives_game_icon():
@@ -106,7 +105,7 @@ def test_not_bonus_gives_game_icon():
                 comparison_type="contains",
                 is_bonus=False)
     case.set_result(True, "", None)
-    assert "🎮 " in ResultFormatter().format_case(case)
+    assert "🎮 " in ResultFormatter.format_case(case)
 
 
 def test_runs_multiple_cases():
@@ -122,7 +121,7 @@ def test_runs_multiple_cases():
                  comparison_type="contains",
                  is_bonus=False)
     case2.set_result(False, "output", None)
-    output = ResultFormatter([case1, case2]).format_cases()
+    output = ResultFormatter.format_cases([case1, case2])
     assert "✅ PASSED" in output
     assert "❌ FAILED" in output
 

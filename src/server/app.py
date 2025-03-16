@@ -56,4 +56,5 @@ def run_tests():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    debug_mode = ConfigUtility.get_setting("TEST_RUNNER_DEBUG", False)
+    app.run(debug=debug_mode, host='0.0.0.0')

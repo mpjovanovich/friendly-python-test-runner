@@ -29,6 +29,26 @@ def test_displays_error_message_when_error():
     assert "message123" in ResultFormatter.format_case(case)
 
 
+# def test_displays_multiline_syntax_error():
+#     case = Case(title="",
+#                 inputs=[],
+#                 expected_output="",
+#                 comparison_type="contains",
+#                 is_bonus=False)
+#     error_message = """File "/home/mpjovanovich/git/friendly-python-test-runner/server/tests/tmp/program.py", line 1
+#     bad code
+#         ^^^^
+# SyntaxError: invalid syntax
+# """
+#     case.set_result(False, "", error_message)
+#     formatted_output = ResultFormatter.format_case(case)
+
+#     assert "bad code" in formatted_output
+#     assert "^^^^" in formatted_output
+#     assert "SyntaxError: invalid syntax" in formatted_output
+#     assert "File" not in formatted_output
+
+
 def test_displays_program_output_header_when_no_error():
     case = Case(title="",
                 inputs=[],

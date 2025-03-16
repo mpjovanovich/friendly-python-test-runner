@@ -1,5 +1,11 @@
-- title: "test"
-  inputs: ["input1", "input2"]
-  expected_output: "test output"
+- title: "test1"
+  inputs: ["input1"]
+  expected_output: "input1"
   comparison_type: "contains"
+  is_bonus: false
+
+- title: "test2"
+  inputs: ["*input2*"]
+  expected_output: "input2"
+  comparison_type: "equals"
   is_bonus: true

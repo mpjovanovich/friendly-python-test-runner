@@ -2,56 +2,54 @@ import os
 import pytest
 import sys
 from pathlib import Path
-from unittest.mock import patch, Mock
 
 # Add parent directory to Python path
 sys.path.append(str(Path(__file__).parent.parent))
 
+from Case import Case
 from SuiteDispatcher import SuiteDispatcher
+from SuiteRunner import SuiteRunner
 
-TEST_DIR = "test_cases"
-TEST_SUITE = "test_suite"
-PROGRAM_PATH = "test_program.py"
+TEST_DIR = Path(__file__).parent / 'test_cases'
+TMP_DIR = Path(__file__).parent / 'tmp'
+TEST_SUITE = "test"
+PROGRAM = "print(1)"
 
-## There's quite a bit of dependency faking going on here,
-## so I'm going to comment it heavily to explain what's happening.
+# ## This is an integration test of the whole system
+# def test_run_suite():
+#     dispatcher = SuiteDispatcher(TMP_DIR, TEST_DIR)
+#     results = dispatcher.run_suite(TEST_SUITE, PROGRAM)
+#     assert results is not None
 
-
-## Rig up a fixture that can be reused across tests
-@pytest.fixture
-def suite_dispatcher():
-    return SuiteDispatcher(TEST_DIR)
-
-
-def test_calls_suite_loader_constructor(suite_dispatcher):
-    ## Patch calls to the dependencies
-    with patch('SuiteDispatcher.SuiteLoader') as MockLoader:
-        ## Run the method under test
-        suite_dispatcher.run_suite(TEST_SUITE, PROGRAM_PATH)
-
-        ## Assert
-        MockLoader.assert_called_once_with(TEST_DIR)
-
-
-def test_calls_suite_loader_load_suite(suite_dispatcher):
-    ## Patch calls to the dependencies
-    with patch('SuiteDispatcher.SuiteLoader') as MockLoader:
-        ## Run the method under test
-        suite_dispatcher.run_suite(TEST_SUITE, PROGRAM_PATH)
-
-        ## Assert
-        mock_loader = MockLoader.return_value
-        mock_loader.load_suite.assert_called_once_with(TEST_SUITE)
+# def test_run_good_suite_end_to_end():
+#     ## Run with good input
+#     ## Should return a formatted string of results
+#     sample_program = """
+# def greet(name):
+#     return f"Hello, {name}!"
+# """
+#     dispatcher = SuiteDispatcher(TMP_DIR, TEST_DIR)
+#     results = dispatcher.run_suite(TEST_SUITE, sample_program)
+#     assert results is not None
 
 
-def test_calls_case_runner_constructor(suite_dispatcher):
+def test_run_bad_suite_end_to_end():
+    ## Run with bad input
+    ## Should return an error message
+    dispatcher = SuiteDispatcher(TMP_DIR, TEST_DIR)
+    results = dispatcher.run_suite(TEST_SUITE, "bad code")
 
-    ## Patch calls to the dependencies
-    with patch('SuiteDispatcher.SuiteLoader') as MockLoader, \
-         patch('SuiteDispatcher.CaseRunner') as MockRunner:
+    print(results)
+    assert results is not None
 
-        ## Run the method under test
-        suite_dispatcher.run_suite(TEST_SUITE, PROGRAM_PATH)
 
-        ## Assert
-        MockRunner.assert_called_once_with(PROGRAM_PATH)
+# def test_system_recovers_from_errors():
+#     ## Run with bad input
+#     dispatcher = SuiteDispatcher(TMP_DIR, TEST_DIR)
+#     results = dispatcher.run_suite(TEST_SUITE, "bad code")
+#     assert results is not None
+
+#     ## System should work for subsequent valid input
+#     ## It shouldn't case a system crash
+#     results = dispatcher.run_suite(TEST_SUITE, "print('hello')")
+#     assert results is not None

@@ -39,9 +39,14 @@ def test_fails_if_missing_suite_file(suite_loader):
 
 def test_returns_test_case_list(suite_loader):
     test_cases = suite_loader.load_suite('test')
-    assert len(test_cases) == 1
-    assert test_cases[0].title == 'test'
-    assert test_cases[0].inputs == ['input1', 'input2']
-    assert test_cases[0].expected_output == 'test output'
+    assert len(test_cases) == 2
+    assert test_cases[0].title == 'test1'
+    assert test_cases[0].inputs == ['input1']
+    assert test_cases[0].expected_output == 'input1'
     assert test_cases[0].comparison_type == 'contains'
-    assert test_cases[0].is_bonus == True
+    assert test_cases[0].is_bonus == False
+    assert test_cases[1].title == 'test2'
+    assert test_cases[1].inputs == ['*input2*']
+    assert test_cases[1].expected_output == 'input2'
+    assert test_cases[1].comparison_type == 'equals'
+    assert test_cases[1].is_bonus == True

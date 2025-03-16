@@ -43,6 +43,7 @@ print(f"Hello, {name}!")
 """
     dispatcher = SuiteDispatcher(TMP_DIR, TEST_DIR)
     results = dispatcher.run_suite(TEST_SUITE, sample_program)
+    print(results)
     results = results.replace('\r\n', '\n')
 
     expected_output = """============================================================

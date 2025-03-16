@@ -5,7 +5,7 @@ class ResultFormatter:
 
     @staticmethod
     def format_cases(cases: list[Case]) -> str:
-        return "\n\n\n".join(
+        return "\n" + "\n\n".join(
             [ResultFormatter.format_case(case) for case in cases])
 
     @staticmethod

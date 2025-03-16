@@ -1,0 +1,3 @@
+- Deploy to VSE
+- Create client calling code; pass in test suite name as arg
+- The case where inputs are being passed to the program and are not consumed is not being handled. You can have a "pass" case that's really not a pass in this scenario.

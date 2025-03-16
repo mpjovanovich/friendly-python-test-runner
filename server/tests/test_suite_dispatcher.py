@@ -15,41 +15,66 @@ TMP_DIR = Path(__file__).parent / 'tmp'
 TEST_SUITE = "test"
 PROGRAM = "print(1)"
 
-# ## This is an integration test of the whole system
-# def test_run_suite():
-#     dispatcher = SuiteDispatcher(TMP_DIR, TEST_DIR)
-#     results = dispatcher.run_suite(TEST_SUITE, PROGRAM)
-#     assert results is not None
 
-# def test_run_good_suite_end_to_end():
-#     ## Run with good input
-#     ## Should return a formatted string of results
-#     sample_program = """
-# def greet(name):
-#     return f"Hello, {name}!"
-# """
-#     dispatcher = SuiteDispatcher(TMP_DIR, TEST_DIR)
-#     results = dispatcher.run_suite(TEST_SUITE, sample_program)
-#     assert results is not None
-
-
-def test_run_bad_suite_end_to_end():
+def test_system_recovers_from_errors():
     ## Run with bad input
-    ## Should return an error message
     dispatcher = SuiteDispatcher(TMP_DIR, TEST_DIR)
     results = dispatcher.run_suite(TEST_SUITE, "bad code")
+    assert results is not None
 
-    print(results)
+    ## System should work for subsequent valid input
+    ## It shouldn't case a system crash
+    results = dispatcher.run_suite(TEST_SUITE, "print('hello')")
     assert results is not None
 
 
-# def test_system_recovers_from_errors():
-#     ## Run with bad input
-#     dispatcher = SuiteDispatcher(TMP_DIR, TEST_DIR)
-#     results = dispatcher.run_suite(TEST_SUITE, "bad code")
-#     assert results is not None
+def test_run_bad_suite_end_to_end():
+    dispatcher = SuiteDispatcher(TMP_DIR, TEST_DIR)
+    results = dispatcher.run_suite(TEST_SUITE, "bad code")
+    assert "SyntaxError" in results
 
-#     ## System should work for subsequent valid input
-#     ## It shouldn't case a system crash
-#     results = dispatcher.run_suite(TEST_SUITE, "print('hello')")
-#     assert results is not None
+
+def test_run_good_suite_end_to_end():
+    ## Run with good input
+    ## Should return a formatted string of results
+    sample_program = """
+name = input("Enter your name: ")
+print(f"Hello, {name}!")
+"""
+    dispatcher = SuiteDispatcher(TMP_DIR, TEST_DIR)
+    results = dispatcher.run_suite(TEST_SUITE, sample_program)
+    results = results.replace('\r\n', '\n')
+
+    expected_output = """============================================================
+🎮 test1
+-------------------------------------------------------
+PROGRAM OUTPUT:
+┌─────────────────────────────────────────────────────┐
+Enter your name: input1
+Hello, input1!
+└─────────────────────────────────────────────────────┘
+
+CHECKING FOR OUTPUT (contains):
+input1
+
+RESULT: ✅ PASSED
+============================================================"""
+
+    assert expected_output in results
+
+    expected_output = """============================================================
+⭐ BONUS: test2
+-------------------------------------------------------
+PROGRAM OUTPUT:
+┌─────────────────────────────────────────────────────┐
+Enter your name: *input2*
+Hello, *input2*!
+└─────────────────────────────────────────────────────┘
+
+CHECKING FOR OUTPUT (equals):
+input2
+
+RESULT: ❌ FAILED
+============================================================"""
+
+    assert expected_output in results

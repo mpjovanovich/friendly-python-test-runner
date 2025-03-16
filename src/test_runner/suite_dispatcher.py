@@ -35,6 +35,6 @@ class SuiteDispatcher:
         except Exception as e:
             ## Errors should be in a user-friendly format at this point,
             ## so we can just return the error message.
-            return str(e)
+            return str(e) + "\n"
         finally:
             IoUtility.delete_dir_if_exists(self._tmp_dir)

@@ -1,14 +1,8 @@
 import pytest
-import sys
-from pathlib import Path
-
-# Add parent directory to Python path
-sys.path.append(str(Path(__file__).parent.parent))
-
-from SuiteRunner import SuiteRunner
-from IoUtility import IoUtility
-from Case import Case
-from CaseRunner import CaseRunner
+from src.test_runner.suite_runner import SuiteRunner
+from src.test_runner.io_utility import IoUtility
+from src.test_runner.case import Case
+from src.test_runner.case_runner import CaseRunner
 
 
 def test_runs_case(mocker):

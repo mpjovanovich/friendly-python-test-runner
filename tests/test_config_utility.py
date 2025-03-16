@@ -1,12 +1,6 @@
 import os
 import pytest
-import sys
-from pathlib import Path
-
-# Add parent directory to Python path
-sys.path.append(str(Path(__file__).parent.parent))
-
-from ConfigUtility import ConfigUtility
+from src.test_runner.config_utility import ConfigUtility
 
 
 def test_fetch_environment_variable_found():

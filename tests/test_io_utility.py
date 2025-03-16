@@ -1,11 +1,5 @@
 import pytest
-import sys
-from pathlib import Path
-
-# add parent directory to python path
-sys.path.append(str(Path(__file__).parent.parent))
-
-from IoUtility import IoUtility, IoOperationError
+from src.test_runner.io_utility import IoUtility, IoOperationError
 
 
 def test_write_temp_file_success(tmp_path):

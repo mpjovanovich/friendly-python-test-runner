@@ -1,6 +1,6 @@
 import yaml
 from pathlib import Path
-from Case import Case
+from src.test_runner.case import Case
 
 
 class SuiteLoader:

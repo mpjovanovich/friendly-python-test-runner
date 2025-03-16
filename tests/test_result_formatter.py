@@ -1,12 +1,6 @@
 import pytest
-import sys
-from pathlib import Path
-
-# Add parent directory to Python path
-sys.path.append(str(Path(__file__).parent.parent))
-
-from ResultFormatter import ResultFormatter
-from Case import Case
+from src.test_runner.case import Case
+from src.test_runner.result_formatter import ResultFormatter
 
 
 def test_displays_error_header_when_error():

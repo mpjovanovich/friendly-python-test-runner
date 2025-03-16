@@ -2,7 +2,7 @@ import os
 import pexpect
 from pathlib import Path
 
-from OutputUtility import OutputUtility
+from src.test_runner.output_utility import OutputUtility
 
 
 class CaseRunner:

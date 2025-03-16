@@ -1,5 +1,5 @@
-from Case import Case
-from CaseRunner import CaseRunner
+from src.test_runner.case import Case
+from src.test_runner.case_runner import CaseRunner
 
 
 class SuiteRunner:

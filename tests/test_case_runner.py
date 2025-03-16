@@ -1,12 +1,6 @@
 import pytest
-import sys
-from pathlib import Path
-
-# Add parent directory to Python path
-sys.path.append(str(Path(__file__).parent.parent))
-
-from CaseRunner import CaseRunner
-from IoUtility import IoUtility
+from src.test_runner.case_runner import CaseRunner
+from src.test_runner.io_utility import IoUtility
 
 TEMP_FILE = "test.py"
 

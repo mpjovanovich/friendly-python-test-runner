@@ -1,12 +1,7 @@
 import os
 import pytest
-import sys
 from pathlib import Path
-
-# Add parent directory to Python path
-sys.path.append(str(Path(__file__).parent.parent))
-
-from SuiteLoader import SuiteLoader
+from src.test_runner.suite_loader import SuiteLoader
 
 
 def test_registry_fails_if_bad_directory():

@@ -1,13 +1,6 @@
-import os
 import pytest
-import sys
 import pexpect
-from pathlib import Path
-
-# add parent directory to python path
-sys.path.append(str(Path(__file__).parent.parent))
-
-from OutputUtility import OutputUtility
+from src.test_runner.output_utility import OutputUtility
 
 
 def test_gets_utf8_stripped_program_output(mocker):

@@ -1,14 +1,8 @@
-import os
 import pytest
-import sys
 from pathlib import Path
-
-# Add parent directory to Python path
-sys.path.append(str(Path(__file__).parent.parent))
-
-from Case import Case
-from SuiteDispatcher import SuiteDispatcher
-from SuiteRunner import SuiteRunner
+from src.test_runner.case import Case
+from src.test_runner.suite_dispatcher import SuiteDispatcher
+from src.test_runner.suite_runner import SuiteRunner
 
 TEST_DIR = Path(__file__).parent / 'test_cases'
 TMP_DIR = Path(__file__).parent / 'tmp'

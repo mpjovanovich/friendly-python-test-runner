@@ -1,8 +1,8 @@
-from CaseRunner import CaseRunner
-from IoUtility import IoUtility
-from SuiteLoader import SuiteLoader
-from SuiteRunner import SuiteRunner
-from ResultFormatter import ResultFormatter
+from src.test_runner.case_runner import CaseRunner
+from src.test_runner.io_utility import IoUtility
+from src.test_runner.suite_loader import SuiteLoader
+from src.test_runner.suite_runner import SuiteRunner
+from src.test_runner.result_formatter import ResultFormatter
 from pathlib import Path
 
 

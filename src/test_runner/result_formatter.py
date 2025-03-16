@@ -1,4 +1,4 @@
-from Case import Case
+from src.test_runner.case import Case
 
 
 class ResultFormatter:

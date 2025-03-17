@@ -7,7 +7,7 @@ from logging.handlers import RotatingFileHandler
 To test:
 curl -X POST http://localhost:5000/api/run-tests \
   -H "Content-Type: application/json" \
-  -d '{"suite_name": "the_suite", "program": "print(1)"}'
+  -d '{"suite_name": "test", "program": "print(1)"}'
 """
 
 TMP_DIR = ConfigUtility.get_setting("TEST_RUNNER_TMP_DIR")

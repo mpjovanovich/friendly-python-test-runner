@@ -93,9 +93,11 @@ def main():
         "test_file",
         help="The path to your Python test file (must end in .py)")
 
+    ## When distributing to students, replace the placeholder with the
+    ## actual API URL
     parser.add_argument(
         "--api",
-        default="http://174.138.52.187:80/api/run-tests",
+        default="http://[insert-api-url]/api/run-tests",
         help="API URL for test submission (default: %(default)s)")
 
     args = parser.parse_args()

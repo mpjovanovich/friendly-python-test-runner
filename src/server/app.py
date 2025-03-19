@@ -4,10 +4,17 @@ from src.test_runner.suite_dispatcher import SuiteDispatcher
 from src.test_runner.config_utility import ConfigUtility
 from logging.handlers import RotatingFileHandler
 """
-To test:
+## Raw string
 curl -X POST http://localhost:5000/api/run-tests \
-  -H "Content-Type: application/json" \
-  -d '{"suite_name": "test", "program": "print(1)"}'
+  -H "Content-Type: application/octet-stream" \
+  --data-raw "print(1)" \
+  http://localhost:5000/api/run-tests?suite_name=test
+
+## File upload
+curl -X POST \
+  -H "Content-Type: application/octet-stream" \
+  --data-binary @path/to/script.py \
+  http://localhost:5000/api/run-tests?suite_name=test
 """
 
 TMP_DIR = ConfigUtility.get_setting("TEST_RUNNER_TMP_DIR")
@@ -42,23 +49,16 @@ def validate_and_extract_data(request):
     error = None
     content_type = request.headers.get('Content-Type')
 
-    if content_type == 'application/json':
-        data = request.get_json()
-        if not data or 'suite_name' not in data or 'program' not in data:
-            error = "Missing required fields: suite_name and program"
-        else:
-            program_text = data['program']
-            suite_name = data['suite_name']
-
-    elif content_type == 'application/octet-stream':
-        if not request.data or 'suite_name' not in request.args:
-            error = "Missing required fields: suite_name and program"
-        else:
-            try:
-                program_text = request.get_data().decode('utf-8')
-                suite_name = request.args.get('suite_name')
-            except UnicodeDecodeError:
-                error = "Program data must be a valid text file"
+    if content_type != 'application/octet-stream':
+        error = "Content-Type must be application/octet-stream"
+    elif not request.data or 'suite_name' not in request.args:
+        error = "Missing required fields: suite_name and program"
+    else:
+        try:
+            program_text = request.get_data().decode('utf-8')
+            suite_name = request.args.get('suite_name')
+        except UnicodeDecodeError:
+            error = "Program data must be a valid text file"
 
     return program_text, suite_name, error
 

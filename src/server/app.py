@@ -35,22 +35,45 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+def validate_and_extract_data(request):
+    """Returns program text, suite_name, and error message."""
+    program_text = None
+    suite_name = None
+    error = None
+    content_type = request.headers.get('Content-Type')
+
+    if content_type == 'application/json':
+        data = request.get_json()
+        if not data or 'suite_name' not in data or 'program' not in data:
+            error = "Missing required fields: suite_name and program"
+        else:
+            program_text = data['program']
+            suite_name = data['suite_name']
+
+    elif content_type == 'application/octet-stream':
+        if not request.data or 'suite_name' not in request.args:
+            error = "Missing required fields: suite_name and program"
+        else:
+            try:
+                program_text = request.get_data().decode('utf-8')
+                suite_name = request.args.get('suite_name')
+            except UnicodeDecodeError:
+                error = "Program data must be a valid text file"
+
+    return program_text, suite_name, error
+
+
 @app.route('/api/run-tests', methods=['POST'])
 def run_tests():
-    data = request.get_json()
+    program, suite_name, error = validate_and_extract_data(request)
 
-    if not data or 'suite_name' not in data or 'program' not in data:
+    if error:
         logger.warning(
-            f"Invalid submission attempt from IP: {request.remote_addr}")
-        return Response(
-            "Error: Missing required fields: suite_name and program",
-            mimetype='text/plain',
-            status=400)
+            f"Invalid submission attempt from IP: {request.remote_addr} - {error}"
+        )
+        return Response(f"Error: {error}", mimetype='text/plain', status=400)
 
-    suite_name = data['suite_name']
-    program = data['program']
     logger.info(f"Submission from {request.remote_addr}; Suite: {suite_name}")
-
     results = dispatcher.run_suite(suite_name, program)
     return Response(results, mimetype='text/plain')
 

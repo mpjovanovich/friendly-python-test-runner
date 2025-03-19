@@ -64,6 +64,15 @@ def test_captures_program_prompt_colon_space(tmp_path):
     assert "test input: " in output
 
 
+def test_errors_if_malformed_prompt(tmp_path):
+    file_path = tmp_path / TEMP_FILE
+    IoUtility.write_temp_file("input('test input')", file_path)
+    test_runner = CaseRunner(file_path)
+    with pytest.raises(RuntimeError) as ex:
+        test_runner.run_program(inputs=[""], timeout=0.1)
+    assert "Program did not provide the expected input prompt" in str(ex.value)
+
+
 def test_unconsumed_inputs_not_in_output(tmp_path):
     file_path = tmp_path / TEMP_FILE
     IoUtility.write_temp_file("input('Enter value: ')", file_path)
@@ -71,6 +80,7 @@ def test_unconsumed_inputs_not_in_output(tmp_path):
     with pytest.raises(RuntimeError) as ex:
         test_runner.run_program(inputs=["first", "second"], timeout=0.1)
     assert "Program terminated before using all test inputs" in str(ex.value)
+    assert "Inputs: ['first', 'second']" in str(ex.value)
 
 
 def test_fails_if_hung_on_input(tmp_path):

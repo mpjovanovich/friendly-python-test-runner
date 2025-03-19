@@ -30,7 +30,8 @@ class CaseRunner:
 
                 if used_inputs < len(inputs):
                     raise RuntimeError(
-                        "Program terminated before using all test inputs")
+                        f"Program terminated before using all test inputs.\n"
+                        f"Inputs: {inputs}\n")
 
                 return output
             finally:
@@ -53,6 +54,13 @@ class CaseRunner:
             except pexpect.EOF:
                 # Program exited early - let the caller handle this via used_inputs count
                 break
+            except pexpect.TIMEOUT:
+                # Program didn't provide the expected input prompt
+                output = self._read_logfile_output()
+                raise RuntimeError(
+                    "Program did not provide the expected input prompt.\n"
+                    "Make sure your prompts end with ': ' when requesting input.\n"
+                )
 
         return used_inputs
 

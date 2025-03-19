@@ -7,14 +7,16 @@ from logging.handlers import RotatingFileHandler
 ## Raw string
 curl -X POST http://localhost:5000/api/run-tests \
   -H "Content-Type: application/octet-stream" \
+  -H "X-Test-Suite-Name: test" \
   --data-raw "print(1)" \
-  http://localhost:5000/api/run-tests?suite_name=test
+  http://localhost:5000/api/run-tests
 
 ## File upload
 curl -X POST \
   -H "Content-Type: application/octet-stream" \
+  -H "X-Test-Suite-Name: test" \
   --data-binary @path/to/script.py \
-  http://localhost:5000/api/run-tests?suite_name=test
+  http://localhost:5000/api/run-tests
 """
 
 TMP_DIR = ConfigUtility.get_setting("TEST_RUNNER_TMP_DIR")
@@ -51,12 +53,12 @@ def validate_and_extract_data(request):
 
     if content_type != 'application/octet-stream':
         error = "Content-Type must be application/octet-stream"
-    elif not request.data or 'suite_name' not in request.args:
-        error = "Missing required fields: suite_name and program"
+    elif not request.data or 'X-Test-Suite-Name' not in request.headers:
+        error = "Missing required fields: X-Test-Suite-Name and program"
     else:
         try:
             program_text = request.get_data().decode('utf-8')
-            suite_name = request.args.get('suite_name')
+            suite_name = request.headers.get('X-Test-Suite-Name')
         except UnicodeDecodeError:
             error = "Program data must be a valid text file"
 

@@ -48,25 +48,29 @@ def test_captures_program_output(tmp_path):
     assert output == "1"
 
 
-def test_captures_program_prompts(tmp_path):
+def test_captures_program_prompt_colon_nospace(tmp_path):
     file_path = tmp_path / TEMP_FILE
-    IoUtility.write_temp_file("input('test input')", file_path)
+    IoUtility.write_temp_file("input('test input:')", file_path)
     test_runner = CaseRunner(file_path)
     output = test_runner.run_program(inputs=[""], timeout=0.1)
-    assert "test input" in output
+    assert "test input:" in output
 
 
-## This has been a right bastard to get working. We'll have to forego it for now.
-# def test_unconsumed_inputs_not_in_output(tmp_path):
-#     file_path = tmp_path / TEMP_FILE
-#     IoUtility.write_temp_file("input('Enter value: ')", file_path)
-#     test_runner = CaseRunner(file_path)
-#     with pytest.raises(RuntimeError) as ex:
-#         test_runner.run_program(inputs=["first", "second"], timeout=0.1)
-#     assert "Program terminated before using all inputs" in str(ex.value)
-#     assert "Consumed 1 of 2 expected inputs" in str(ex.value)
-#     assert "1. first" in str(ex.value)
-#     assert "2. second" in str(ex.value)
+def test_captures_program_prompt_colon_space(tmp_path):
+    file_path = tmp_path / TEMP_FILE
+    IoUtility.write_temp_file("input('test input: ')", file_path)
+    test_runner = CaseRunner(file_path)
+    output = test_runner.run_program(inputs=[""], timeout=0.1)
+    assert "test input: " in output
+
+
+def test_unconsumed_inputs_not_in_output(tmp_path):
+    file_path = tmp_path / TEMP_FILE
+    IoUtility.write_temp_file("input('Enter value: ')", file_path)
+    test_runner = CaseRunner(file_path)
+    with pytest.raises(RuntimeError) as ex:
+        test_runner.run_program(inputs=["first", "second"], timeout=0.1)
+    assert "Program terminated before using all test inputs" in str(ex.value)
 
 
 def test_fails_if_hung_on_input(tmp_path):

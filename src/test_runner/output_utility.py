@@ -15,8 +15,3 @@ class OutputUtility:
                 error_lines.append(line)
 
         return "\n".join(error_lines)
-
-    @staticmethod
-    def get_program_output(child: pexpect.spawn) -> str:
-        """Gets the output of the program after it has finished running"""
-        return child.before.decode('utf-8').strip()

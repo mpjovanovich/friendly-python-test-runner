@@ -7,7 +7,6 @@ from src.test_runner.suite_runner import SuiteRunner
 TEST_DIR = Path(__file__).parent / 'test_cases'
 TMP_DIR = Path(__file__).parent / 'tmp'
 TEST_SUITE = "test"
-PROGRAM = "print(1)"
 
 
 def test_system_recovers_from_errors():
@@ -18,7 +17,7 @@ def test_system_recovers_from_errors():
 
     ## System should work for subsequent valid input
     ## It shouldn't case a system crash
-    results = dispatcher.run_suite(TEST_SUITE, "print('hello')")
+    results = dispatcher.run_suite(TEST_SUITE, "input('Enter a value: ')")
     assert results is not None
 
 
@@ -37,8 +36,6 @@ print(f"Hello, {name}!")
 """
     dispatcher = SuiteDispatcher(TMP_DIR, TEST_DIR)
     results = dispatcher.run_suite(TEST_SUITE, sample_program)
-    print(results)
-    results = results.replace('\r\n', '\n')
 
     expected_output = """============================================================
 🎮 test1
@@ -73,3 +70,5 @@ RESULT: ❌ FAILED
 ============================================================"""
 
     assert expected_output in results
+
+    print(results)

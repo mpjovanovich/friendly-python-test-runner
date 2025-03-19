@@ -3,22 +3,6 @@ import pexpect
 from src.test_runner.output_utility import OutputUtility
 
 
-def test_gets_utf8_stripped_program_output(mocker):
-    mock_child = mocker.Mock(spec=pexpect.spawn)
-    mock_child.before = b"test123\n"
-
-    result = OutputUtility.get_program_output(mock_child)
-    assert result == "test123"
-
-
-def test_gets_empty_program_output(mocker):
-    mock_child = mocker.Mock(spec=pexpect.spawn)
-    mock_child.before = b""
-
-    result = OutputUtility.get_program_output(mock_child)
-    assert result == ""
-
-
 def test_get_error_info_regular_error():
     error_output = """Traceback (most recent call last):
   File "<stdin>", line 1, in <module>

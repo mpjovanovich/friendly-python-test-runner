@@ -51,23 +51,22 @@ class ResultFormatter:
         return sum(1 for case in cases if case.passed and not case.is_bonus)
 
     @staticmethod
-    def _get_num_failed(cases: list[Case]) -> int:
-        return sum(1 for case in cases
-                   if not case.passed and not case.is_bonus)
+    def _get_num_non_bonus(cases: list[Case]) -> int:
+        return sum(1 for case in cases if not case.is_bonus)
 
     @staticmethod
     def _get_num_bonus_passed(cases: list[Case]) -> int:
         return sum(1 for case in cases if case.passed and case.is_bonus)
 
     @staticmethod
-    def _get_num_non_bonus(cases: list[Case]) -> int:
-        return sum(1 for case in cases if not case.is_bonus)
+    def _get_num_bonus(cases: list[Case]) -> int:
+        return sum(1 for case in cases if case.is_bonus)
 
     @staticmethod
     def _get_summary(cases: list[Case]) -> str:
         num_passed = ResultFormatter._get_num_passed(cases)
-        num_failed = ResultFormatter._get_num_failed(cases)
         num_bonus_passed = ResultFormatter._get_num_bonus_passed(cases)
         num_non_bonus = ResultFormatter._get_num_non_bonus(cases)
+        num_bonus = ResultFormatter._get_num_bonus(cases)
 
-        return f"SUMMARY: {num_passed}/{num_non_bonus} passed, {num_failed}/{num_non_bonus} failed, {num_bonus_passed}/{num_non_bonus} bonus"
+        return f"SUMMARY: {num_passed}/{num_non_bonus} passed, {num_bonus_passed}/{num_bonus} bonus"

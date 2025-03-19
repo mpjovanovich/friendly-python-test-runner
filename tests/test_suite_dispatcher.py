@@ -30,7 +30,7 @@ def test_run_bad_suite_end_to_end():
 def test_summary_is_correct():
     dispatcher = SuiteDispatcher(TMP_DIR, TEST_DIR)
     results = dispatcher.run_suite(TEST_SUITE, "bad code")
-    assert "SUMMARY: 1/1 passed, 0/1 failed, 0/1 bonus" in results
+    assert "SUMMARY: 0/1 passed, 0/1 bonus" in results
 
 
 def test_run_good_suite_end_to_end():

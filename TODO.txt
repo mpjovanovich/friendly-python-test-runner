@@ -1,2 +1,1 @@
-- The case where inputs are being passed to the program and are not consumed is not being handled. You can have a "pass" case that's really not a pass in this scenario.
-  - I think we can just check if the end of the output is the last input that was passed it; it seems to be appended to the end of the program output.
+All good for now...

@@ -18,7 +18,7 @@ class ResultFormatter:
         title = f"{'⭐ BONUS: ' if case.is_bonus else '🎮 '}{test_number}.) {case.title}"
 
         program_input = "PROGRAM INPUT:\n"
-        program_input += "\n".join(case.inputs)
+        program_input += "\n".join([f'"{input}"' for input in case.inputs])
         program_input += "\n"
 
         error = "ERROR:\n"
@@ -32,7 +32,7 @@ class ResultFormatter:
         program_output += "└─────────────────────────────────────────────────────┘"
 
         expected_output = f'CHECKING FOR OUTPUT ({"contains" if case.comparison_type == "contains" else "equals"}):\n'
-        expected_output += case.expected_output
+        expected_output += f'"{case.expected_output}"'
 
         result = f'RESULT: {"✅ PASSED" if case.passed else "❌ FAILED"}'
 

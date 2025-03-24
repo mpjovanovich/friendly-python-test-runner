@@ -5,11 +5,11 @@ from src.test_runner.result_formatter import ResultFormatter
 
 def test_displays_program_input():
     case = Case(title="",
-                inputs=["input1", "input2"],
+                inputs=["input1", " input2 "],
                 expected_output="",
                 comparison_type="contains",
                 is_bonus=False)
-    assert "PROGRAM INPUT:\ninput1\ninput2" in ResultFormatter.format_case(
+    assert "PROGRAM INPUT:\n\"input1\"\n\" input2 \"" in ResultFormatter.format_case(
         case, 1)
 
 
@@ -56,10 +56,10 @@ def test_displays_program_output_when_no_error():
 def test_displays_checking_for_contains_message():
     case = Case(title="",
                 inputs=[],
-                expected_output="",
+                expected_output="expected",
                 comparison_type="contains",
                 is_bonus=False)
-    assert "CHECKING FOR OUTPUT (contains):" in ResultFormatter.format_case(
+    assert "CHECKING FOR OUTPUT (contains):\n\"expected\"" in ResultFormatter.format_case(
         case, 1)
 
 

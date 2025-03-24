@@ -5,16 +5,21 @@ class ResultFormatter:
 
     @staticmethod
     def format_cases(cases: list[Case]) -> str:
-        return "\n" + "\n\n".join(
-            [ResultFormatter.format_case(case)
-             for case in cases]) + "\n" + ResultFormatter._get_summary(cases)
+        return "\n" + "\n\n".join([
+            ResultFormatter.format_case(case, test_number + 1)
+            for test_number, case in enumerate(cases)
+        ]) + "\n" + ResultFormatter._get_summary(cases)
 
     @staticmethod
-    def format_case(case: Case) -> str:
+    def format_case(case: Case, test_number: int) -> str:
         separator = "=" * 60
         sub_separator = "-" * 55
 
-        title = f"{'⭐ BONUS: ' if case.is_bonus else '🎮 '}{case.title}"
+        title = f"{'⭐ BONUS: ' if case.is_bonus else '🎮 '}{test_number}.) {case.title}"
+
+        program_input = "PROGRAM INPUT:\n"
+        program_input += "\n".join(case.inputs)
+        program_input += "\n"
 
         error = "ERROR:\n"
         error += "┌─────────────────────────────────────────────────────┐\n"
@@ -34,6 +39,7 @@ class ResultFormatter:
         formatted_result = f"{separator}\n"
         formatted_result += f"{title}\n"
         formatted_result += f"{sub_separator}\n"
+        formatted_result += f"{program_input}\n"
         if case.error:
             formatted_result += f"{error}\n"
         else:

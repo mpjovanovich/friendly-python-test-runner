@@ -1,2 +1,1 @@
-Put numbers on tests to make it easier for students to tell me which is failing.
 Show inputs for each test.

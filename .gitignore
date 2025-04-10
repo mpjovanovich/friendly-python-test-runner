@@ -7,3 +7,4 @@ dist/
 build/
 *.log
 .env
+.pytest_cache/

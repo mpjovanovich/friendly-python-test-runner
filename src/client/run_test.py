@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import io
 import os
 import requests
 import sys
@@ -44,6 +45,9 @@ def submit_test(test_suite_name, test_file_path, api_url):
     )
 
     try:
+        # Needed to add this to support unicode characters, like the emojis in the test output
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
         response = requests.post(api_url,
                                  data=file_binary,
                                  headers=headers,
